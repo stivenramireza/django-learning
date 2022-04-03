@@ -3,3 +3,6 @@
 
 # Virtual environments
 venv
+
+# Cache
+__pycache__
