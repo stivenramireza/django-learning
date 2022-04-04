@@ -33,6 +33,12 @@ class DetailView(generic.DetailView):
     model = Question
     template_name = "polls/detail.html"
 
+    def get_queryset(self) -> object:
+        """
+        Excludes any questions that aren't published yet.
+        """
+        return Question.objects.filter(pub_date__lte=timezone.now())
+
 
 # def results(request: object, question_id: int) -> object:
 #     question = get_object_or_404(Question, pk=question_id)
