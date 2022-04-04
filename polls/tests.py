@@ -30,7 +30,7 @@ class TestQuestionModel(TestCase):
 
     def test_was_published_recently_with_past_questions(self):
         """
-        was_published_recently() returns True for questions whose pub_date is
+        was_published_recently() returns False for questions whose pub_date is
         in the present.
         """
         self.question.pub_date = timezone.now() - datetime.timedelta(days=30)
