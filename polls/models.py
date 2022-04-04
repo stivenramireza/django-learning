@@ -18,12 +18,13 @@ class Question(models.Model):
             >= timezone.now() - datetime.timedelta(days=1)
         )
 
-    def save(self, choices: list[object], *args, **kwargs) -> None:
+    def save(self, choices: list[object] = None, *args, **kwargs) -> None:
         question = super().save(*args, **kwargs)
-        if not choices:
-            raise Exception("Question must have at least one choice")
-        for choice in choices:
-            choice.save
+        # TODO Check the correct way to do this
+        # if not choices:
+        #     raise Exception("Question must have at least one choice")
+        # for choice in choices:
+        #     choice.save
         return question
 
 
