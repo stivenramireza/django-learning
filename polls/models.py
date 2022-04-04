@@ -18,6 +18,14 @@ class Question(models.Model):
             >= timezone.now() - datetime.timedelta(days=1)
         )
 
+    def save(self, choices: list[object], *args, **kwargs) -> None:
+        question = super().save(*args, **kwargs)
+        if not choices:
+            raise Exception("Question must have at least one choice")
+        for choice in choices:
+            choice.save
+        return question
+
 
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
