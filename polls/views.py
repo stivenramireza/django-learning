@@ -1,25 +1,43 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.views import generic
 
 from .models import Question, Choice
 
 
-def index(request: object) -> object:
-    latest_question_list = Question.objects.all()
-    return render(
-        request, "polls/index.html", {"latest_question_list": latest_question_list}
-    )
+# def index(request: object) -> object:
+#     latest_question_list = Question.objects.all()
+#     return render(
+#         request, "polls/index.html", {"latest_question_list": latest_question_list}
+#     )
 
 
-def detail(request: object, question_id: int) -> object:
-    question = get_object_or_404(Question, pk=question_id)
-    return render(request, "polls/detail.html", {"question": question})
+class IndexView(generic.ListView):
+    template_name = "polls/index.html"
+    context_object_name = "latest_question_list"
+
+    def get_queryset(self) -> object:
+        return Question.objects.order_by("-pub_date")[:5]
 
 
-def results(request: object, question_id: int) -> object:
-    question = get_object_or_404(Question, pk=question_id)
-    return render(request, "polls/results.html", {"question": question})
+# def detail(request: object, question_id: int) -> object:
+#     question = get_object_or_404(Question, pk=question_id)
+#     return render(request, "polls/detail.html", {"question": question})
+
+
+class DetailView(generic.DetailView):
+    model = Question
+    template_name = "polls/detail.html"
+
+
+# def results(request: object, question_id: int) -> object:
+#     question = get_object_or_404(Question, pk=question_id)
+#     return render(request, "polls/results.html", {"question": question})
+
+
+class ResultView(DetailView):
+    template_name = "polls/results.html"
 
 
 def vote(request: object, question_id: int) -> object:
